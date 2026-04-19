@@ -343,11 +343,25 @@ def render_video():
         
         logger.info(f"Render complete: {public_url}")
         
+        # Fire callback to AXIS if provided
+        callback_url = data.get('callback_url')
+        job_id = data.get('job_id')
+        if callback_url and job_id:
+            try:
+                import urllib.parse
+                encoded_url = urllib.parse.quote(public_url, safe='')
+                full_callback = f"{callback_url}&video_url={encoded_url}&status=done"
+                requests.get(full_callback, timeout=10)
+                logger.info(f"Callback fired: {full_callback}")
+            except Exception as cb_err:
+                logger.error(f"Callback failed: {cb_err}")
+
         return jsonify({
-            "status": "done",
-            "url": public_url,
-            "duration": video_duration
+            "status": "accepted",
+            "job_id": job_id or "unknown",
+            "message": "Render started"
         })
+Also find the error handler at the
         
     except Exception as e:
         logger.error(f"Render error: {str(e)}", exc_info=True)
