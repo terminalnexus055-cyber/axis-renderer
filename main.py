@@ -365,8 +365,16 @@ Also find the error handler at the
         
     except Exception as e:
         logger.error(f"Render error: {str(e)}", exc_info=True)
+        # Fire failure callback if we have job info
+        try:
+            data_safe = request.json or {}
+            cb = data_safe.get('callback_url')
+            jid = data_safe.get('job_id')
+            if cb and jid:
+                requests.get(f"{cb}&status=failed", timeout=5)
+        except:
+            pass
         return jsonify({"status": "error", "message": str(e)}), 500
-
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
