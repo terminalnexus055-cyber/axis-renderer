@@ -12,6 +12,8 @@ from moviepy.editor import (
     ImageClip, concatenate_videoclips
 )
 from moviepy.audio.fx.audio_loop import audio_loop
+from moviepy.video.fx.crop import crop
+from moviepy.video.fx.resize import resize
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
