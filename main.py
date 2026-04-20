@@ -7,6 +7,9 @@ import numpy as np
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+# Patch for Pillow 10+ compatibility with MoviePy 1.0.3
+if not hasattr(Image, 'ANTIALIAS'):
+    Image.ANTIALIAS = Image.LANCZOS
 from moviepy.editor import (
     VideoFileClip, AudioFileClip, CompositeVideoClip, 
     ImageClip, concatenate_videoclips
