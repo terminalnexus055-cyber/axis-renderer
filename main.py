@@ -364,7 +364,6 @@ def render_video():
             "job_id": job_id or "unknown",
             "message": "Render started"
         })
-Also find the error handler at the
         
     except Exception as e:
         logger.error(f"Render error: {str(e)}", exc_info=True)
